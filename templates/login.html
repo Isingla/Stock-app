@@ -1,0 +1,39 @@
+{% extends "base.html" %} {% block content %}
+<div class="login_form">
+    <h2 class="heading">
+        Login
+    </h2>
+    <form action="" method="POST">
+        {{ form.hidden_tag() }}
+        <div>
+            {{ form.username.label(class = "my_label") }}
+            {{ form.username(class = "my_input") }}
+            {% if form.username.errors %}
+                {% for error in form.username.errors %}
+                    <p class="my_error">{{ error}}</p>
+                {% endfor %}
+            {% endif %}
+        </div>
+        <div>
+            {{ form.password.label(class = "my_label") }}
+            {{ form.password(class = "my_input") }}
+            {% if form.password.errors %}
+                {% for error in form.password.errors %}
+                    <p class="my_error">{{ error}}</p>
+                {% endfor %}
+            {% endif %}
+        </div>
+        <div class="remember_div">
+            {{ form.remember_me(class = "my_remember_me")}}
+            {{ form.remember_me.label(class ="remember_label")}}
+        </div>
+        <div>
+            {{ form.submit_login(class= "my_submit") }}
+        </div>
+    </form>
+    <p class="checkfor_account">
+        Don't have an account?
+        <a href="{{ url_for('register') }}" class="second_option">Register</a>
+    </p>
+</div>
+{% endblock %}

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stocks App</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='main.css') }}">
+</head>
+
+<body>
+    <!-- Making navigation bar -->
+    <ul class="navbar">
+        <li class="item item 1">
+            <a href="{{ url_for('home') }}" class="links">Home</a>
+        </li>
+        <li class="item item2">
+            <a href="about.html" class="links">About</a>
+        </li>
+        <li class="item item3">
+            <a href="{{ url_for('login') }}" class="links">Login</a>
+        </li>
+        <li class="item item4">
+            <a href="logout.html" class="links">Logout</a>
+        </li>
+        <li class="item item5">
+            <a href="{{ url_for('register') }}" class="links">Register</a>
+        </li>
+    </ul>
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    <ul class=flashes>
+    {% for message in messages %}
+      <li>{{ message }}</li>
+    {% endfor %}
+    </ul>
+    {% endif %}
+    {% endwith %}
+    <div class="container">
+        {% block content %} {% endblock %}
+    </div>
+    <!-- Making footer -->
+    <div class="footer">
+        <p>&copy; StocksMarket.com All rights reserved</p>
+    </div>
+</body>
+
+</html>

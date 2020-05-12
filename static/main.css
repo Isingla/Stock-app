@@ -1,0 +1,139 @@
+body {
+    background-color: rgb(32, 37, 45);
+    display: flex;
+    margin: 0px;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.navbar {
+    align-self: flex-start;
+    margin: 0px;
+    width: 100%;
+    display: flex;
+    justify-content: space-evenly;
+    background-color: black;
+    padding-inline-start: 0px;
+}
+
+.links {
+    padding: 20px;
+    height: 20px;
+    text-decoration: none;
+    list-style-type: none;
+    color: white;
+}
+
+.item{
+    margin: 20px;
+    padding: 7px;
+    list-style-type: none;
+    background-color: gray;
+    border-radius: 10px;
+}
+
+.item:hover {
+    background-color: rgb(32, 37, 45);
+}
+
+.footer {
+    text-align: center;
+    background-color: black;
+    color:white;
+    width: 100%;
+}
+
+.container {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.register_form {
+    text-align: center;
+    align-self: center;
+    border:solid wheat;
+    border-radius: 10px;
+    background-color: black;
+    padding-top: 10px;
+    padding-bottom: 20px;
+    padding-left: 40px ;
+    padding-right: 40px;
+    
+}
+
+.my_label {
+
+    color: whitesmoke;
+    display: block;
+    margin: 7px;
+}
+
+.my_input {
+    border-radius: 10px;
+}
+
+.my_submit {
+    margin: 15px;
+    border-radius: 10px;
+    width: 70%;
+    font-size: 13px;
+}
+
+input[type="text"] {
+    font-size: 15px;
+    width: 100%;
+
+}
+
+.login_form {
+    text-align: center;
+    align-self: center;
+    border:solid wheat;
+    border-radius: 10px;
+    background-color: black;
+    padding-top: 10px;
+    padding-bottom: 20px;
+    padding-left: 40px ;
+    padding-right: 40px;
+}
+
+input[type="password"] {
+    font-size: 15px;
+    width: 100%;
+}
+
+.my_error {
+    color: darkred;
+}
+
+.my_remember_me {
+    display: inline;
+}
+
+.remember_label {
+    color: white;
+}
+
+.remember_div {
+    margin-top: 15px;
+}
+
+.heading {
+    color: white;
+    margin-bottom: 35px;
+}
+
+.checkfor_account {
+    color: white;
+}
+
+.second_option {
+    color: wheat;
+}
+
+.second_option:hover {
+    background-color: wheat;
+    color: black;
+}
