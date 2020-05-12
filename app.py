@@ -3,7 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 from wtforms import StringField, PasswordField, SubmitField, BooleanField
 from flask_wtf import FlaskForm
 from wtforms.validators import EqualTo, Length, DataRequired, ValidationError
-from flask_login import login_user, LoginManager, UserMixin
+from flask_login import login_user, LoginManager, UserMixin, logout_user, current_user, login_required
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
@@ -103,6 +103,21 @@ def login():
         else:
             flash(f"Username is incorrect", "warning")
     return render_template("login.html", form=form)
+
+@app.route("/logout", methods=["GET"])
+def logout():
+    if  current_user.is_authenticated:
+        logout_user()
+        flash("Successfully logged out", "success")
+    else:
+        flash("User not logged in", "warning")
+    return redirect(url_for('home'))
+
+@app.route("/profile")
+@login_required
+def my_profile():
+    return render_template("profile.html", user=current_user)
+
 
 if __name__ == "__main__":
     app.run(debug=True)

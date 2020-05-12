@@ -17,21 +17,28 @@
         <li class="item item2">
             <a href="about.html" class="links">About</a>
         </li>
+        {% if current_user.is_authenticated %}
         <li class="item item3">
-            <a href="{{ url_for('login') }}" class="links">Login</a>
+            <a href="{{ url_for('my_profile')}}" class="links">Profile</a>
         </li>
         <li class="item item4">
-            <a href="logout.html" class="links">Logout</a>
+            <a href="{{ url_for('logout') }}" class="links">Logout</a>
         </li>
+        {% else %}
         <li class="item item5">
+            <a href="{{ url_for('login') }}" class="links">Login</a>
+        </li>
+        <li class="item item6">
             <a href="{{ url_for('register') }}" class="links">Register</a>
         </li>
+        {% endif %}
     </ul>
-    {% with messages = get_flashed_messages() %}
-    {% if messages %}
+    {% with messages = get_flashed_messages(with_categories=True) %}{% if messages %}
     <ul class=flashes>
-    {% for message in messages %}
-      <li>{{ message }}</li>
+    {% for category,message in messages %}
+    <div class = "{{ category }}">
+      <li class = "flash_item">{{ message }}</li>
+    </div>
     {% endfor %}
     </ul>
     {% endif %}

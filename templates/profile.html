@@ -1,0 +1,18 @@
+{% extends "base.html" %} {% block content %}
+<div class = "all_profile">
+    <div class="profile_menue">
+        <ul>
+            <li class="profile_links">Show Profile</li>
+            <li class="profile_links">Update Profile</li>
+            <li class="profile_links">Change Password</li>
+            <li class="profile_links">Delete Account</li>
+        </ul>
+    </div>
+        <div class="profile_data">
+            <h2>{{ user.username }}</h2>
+            <h3>{{ user.email }}</h3>
+            <h3>{{ user.first_name }}</h3>
+            <h3>{{ user.last_name }}</h3>
+        </div>
+</div>
+{% endblock %}
