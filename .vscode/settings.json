@@ -1,5 +1,5 @@
 {
-    "python.pythonPath": "C:\\Users\\Ising\\.virtualenvs\\Stocks-app\\Scripts\\python.exe",
+    "python.pythonPath": "C:\\Users\\Ising\\anaconda3\\envs\\Stocks-app\\python.exe",
     "editor.wordWrap": "on",
     "editor.formatOnSave": false
 }
