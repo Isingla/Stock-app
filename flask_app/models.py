@@ -15,6 +15,8 @@ class User(db.Model, UserMixin):
     password = db.Column(db.String(40), nullable=False)
     first_name = db.Column(db.String(20), nullable=False)
     last_name = db.Column(db.String(20), nullable=False)
+    admin = db.Column(db.Boolean, nullable=False, default=False)
+    confiremd = db.Column(db.Boolean, nullable=False, default=False)
 
     def __repr__(self):
         return f"User - {self.username}, {self.email}, {self.first_name}, {self.last_name}"

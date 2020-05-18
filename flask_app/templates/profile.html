@@ -6,6 +6,11 @@
             <li class="profile_links">Update Profile</li>
             <li class="profile_links">Change Password</li>
             <li class="profile_links">Delete Account</li>
+            <li>
+                <form action= "{{ url_for('delete_account')}}", method="POST">
+                    <button type ="submit">Delete account</button>
+                </form>
+            </li>
         </ul>
     </div>
         <div class="profile_data">

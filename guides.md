@@ -5,7 +5,7 @@
 ```python
 from app imoort db, user
 db.create_all()
-user = User(username="Sayam", email="test@gmail.com", password="test123456")
+user = User(username="Sayam", first_name="sayam", last_name = "kumar", email="test@gmail.com", password="test123456")
 db.session.add(user)
 db.session.commit()
 ```
