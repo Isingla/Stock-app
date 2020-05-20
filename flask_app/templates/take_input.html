@@ -1,0 +1,12 @@
+{% extends "base.html" %} {% block content %}
+<div>
+    <form action="" method="POST"></form>
+    {{ form.hidden_tag() }}
+</div>
+<div>
+    <label for="" style="color: blanchedalmond;" >{{ label }}</label>
+<div>
+    {{ form.submit(class="my_submit") }}
+</div>
+</div>
+{% endblock %}

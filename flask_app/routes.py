@@ -5,7 +5,7 @@ from flask_mail import Message
 
 #app imports
 from flask_app import db, app, mail_engine
-from flask_app.forms import RegistrationForm, LoginForm, UpdatePassword, ForgotPassword
+from flask_app.forms import RegistrationForm, LoginForm, UpdatePassword, ForgotPassword, Input
 from flask_app.models import User
 
 @app.route("/")
@@ -140,8 +140,13 @@ def admin_functions():
 @app.route("/forgot/password", methods=["GET", "POST"])
 def forgot_password():
     form = ForgotPassword()
-    if form.validate_on_submit():
-        print(form.email_username.data)
+    if form.email_username == "username" or form.email_username == "email":
+        return redirect(url_for("take_input"), form.email_username.data)
     else:
-        print("Not validated")
+        flash("please choose an input")
+        return redirect(url_for("forgot_password"))
     return render_template("forgot_password.html", form=form)
+@app.route("/take/input/<what_selected>")
+def take_inut(what_selected):
+    form=Input()
+    return render_template('take_input.html', form=form, label=what-selected)

@@ -57,4 +57,6 @@ class ForgotPassword(FlaskForm):
     email_username = RadioField("Select what you remember", choices=[("username", "Username"), ("email", "Email")])
     submit = SubmitField("Submit")
 
-
+class Input(FlaskForm):
+    input_field = StringField("My_Label")
+    submit = SubmitField("submit")
