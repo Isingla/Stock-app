@@ -5,7 +5,7 @@ from flask_mail import Message
 
 #app imports
 from flask_app import db, app, mail_engine
-from flask_app.forms import RegistrationForm, LoginForm
+from flask_app.forms import RegistrationForm, LoginForm, UpdatePassword
 from flask_app.models import User
 
 @app.route("/")
@@ -102,3 +102,29 @@ def confirm_user(token):
     user.confiremd = True
     db.session.commit()
     return redirect(url_for('home'))
+
+@app.route("/update/password", methods=["GET", "POST"])
+@login_required
+def update_password():
+    user = current_user
+    old_password_form = UpdatePassword()
+    if old_password_form.validate_on_submit():
+        database_password = current_user.password
+        form_password = old_password_form.old_password.data
+        if form_password == database_password:
+            return redirect(url_for("confirm_new_password"))
+        else:
+            flash("Password does not match", "warning")
+    return render_template("old_password.html", form=old_password_form)
+
+@app.route("/confirm/password", methods=["GET", "POST"])
+def confirm_new_password():
+    new_password_form = UpdatePassword()
+    if new_password_form.validate_on_submit():
+        current_user.password = new_password_form.password.data
+        db.session.commit()
+        flash("Password change successful", "success")
+        return redirect(url_for("home"))
+    return render_template("new_password.html", form=new_password_form)
+
+@app.route("/admin")

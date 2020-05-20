@@ -44,3 +44,13 @@ class LoginForm(FlaskForm):
     submit_login= SubmitField("Login")
 
 
+class  UpdatePassword(FlaskForm):
+    old_password = PasswordField("Previous Password", validators=[
+                             Length(max=40)])
+    password = PasswordField("Password", validators=[
+                             Length(max=40)])
+    confirm_password = PasswordField(
+        "Confirm Password", validators=[EqualTo("password", message="Passwords must match")])
+    submit_new_password = SubmitField("Submit")
+
+
