@@ -5,7 +5,7 @@ from flask_mail import Message
 
 #app imports
 from flask_app import db, app, mail_engine
-from flask_app.forms import RegistrationForm, LoginForm, UpdatePassword
+from flask_app.forms import RegistrationForm, LoginForm, UpdatePassword, ForgotPassword
 from flask_app.models import User
 
 @app.route("/")
@@ -128,3 +128,20 @@ def confirm_new_password():
     return render_template("new_password.html", form=new_password_form)
 
 @app.route("/admin")
+@login_required
+def admin_functions():
+    user=User.query.all()
+    if current_user.admin == True:
+        return render_template("admin.html", user=user)
+    else:
+        flash("You do not have admin permissions", "warning")
+        return redirect(url_for("home"))
+
+@app.route("/forgot/password", methods=["GET", "POST"])
+def forgot_password():
+    form = ForgotPassword()
+    if form.validate_on_submit():
+        print(form.email_username.data)
+    else:
+        print("Not validated")
+    return render_template("forgot_password.html", form=form)

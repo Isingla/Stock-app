@@ -196,3 +196,22 @@ border-radius: 10px;
 .profile_links {
     padding: 10px 20px;
 }
+
+th {
+    padding: 10px;
+    color: white;
+}
+
+td {
+    padding: 10px;
+    color: gray;
+}
+
+table,td,th {
+    border: 1px solid wheat;
+    border-collapse: collapse;
+}
+
+table {
+    margin-top: 40px;
+}

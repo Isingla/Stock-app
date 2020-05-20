@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, BooleanField
+from wtforms import StringField, PasswordField, SubmitField, BooleanField, RadioField
 from wtforms.validators import EqualTo, Length, DataRequired, ValidationError
 
 # app imports
@@ -52,5 +52,9 @@ class  UpdatePassword(FlaskForm):
     confirm_password = PasswordField(
         "Confirm Password", validators=[EqualTo("password", message="Passwords must match")])
     submit_new_password = SubmitField("Submit")
+
+class ForgotPassword(FlaskForm):
+    email_username = RadioField("Select what you remember", choices=[("username", "Username"), ("email", "Email")])
+    submit = SubmitField("Submit")
 
 
