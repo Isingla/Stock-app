@@ -22,6 +22,19 @@ def send_mail(recipient, message_body):
     )
     mail_engine.send(email)
 
+def creates_send_email(username, first_name, last_name, email, body,redirect_function):
+    encoder = URLSafeTimedSerializer(app.config['SECRET_KEY'])
+    token = encoder.dumps(username, salt=app.config['SECURITY_PASSWORD_SALT'])
+    url = url_for(redirect_function, token=token, _external=True)
+    message_body = f"""
+    <h1>Hi, {first_name} {last_name}</h1>
+    <a href="{url}">{body}</a>
+    <h2>We hope to see you soon!</h2>
+    """
+    recipient = email
+    send_mail(recipient, message_body)
+
+
 
 
 @app.route("/register", methods=["GET", "POST"])
@@ -35,17 +48,7 @@ def register():
         password = form.password.data
         user = User(username=username, email=email,
                     first_name=first_name, last_name=last_name, password=password)
-
-        encoder = URLSafeTimedSerializer(app.config['SECRET_KEY'])
-        token = encoder.dumps(form.username.data, salt=app.config['SECURITY_PASSWORD_SALT'])
-        url = url_for("confirm_user", token=token, _external=True)
-        message_body = f"""
-        <h1>Hi, {form.first_name.data} {form.last_name.data}</h1>
-        <a href="{url}">Click this to confirm your email</a>
-        <h2>We hope to see you soon!</h2>
-        """
-        recipient = form.email.data
-        send_mail(recipient, message_body)
+        creates_send_email(username,first_name,last_name, email, "click to confirm you email", "confirm_user")
 
         db.session.add(user)
         db.session.commit()
@@ -140,13 +143,48 @@ def admin_functions():
 @app.route("/forgot/password", methods=["GET", "POST"])
 def forgot_password():
     form = ForgotPassword()
-    if form.email_username == "username" or form.email_username == "email":
-        return redirect(url_for("take_input"), form.email_username.data)
-    else:
-        flash("please choose an input")
-        return redirect(url_for("forgot_password"))
+    if form.validate_on_submit():
+        if form.email_username.data == "username" or form.email_username.data == "email":
+            return redirect(url_for("take_input", what_selected =form.email_username.data))
+        else:
+            flash("please choose an input")
+            return redirect(url_for("forgot_password"))
     return render_template("forgot_password.html", form=form)
-@app.route("/take/input/<what_selected>")
-def take_inut(what_selected):
+@app.route("/take/input/<what_selected>", methods=["GET", "POST"])
+def take_input(what_selected):
     form=Input()
-    return render_template('take_input.html', form=form, label=what-selected)
+    if form.validate_on_submit():
+        data = form.input_field.data
+        if what_selected == "username":
+            user = User.query.filter_by(username=data).first()
+        else:
+            user = User.query.filter_by(email=data).first()
+        if user is not None:
+            #send an email
+            email = user.email
+            username=user.username
+            first_name = user.first_name
+            last_name = user.last_name
+            creates_send_email(username,first_name,last_name,email, "click here to reset your password", "confirm_forgot_password")
+            flash("We sent an email to you please click the link the reset your password", "success")
+
+
+            pass
+        else:
+            flash(f"This,{what_selected} does not exist", "warning")
+            return redirect(url_for("forgot_password"))
+
+    return render_template('take_input.html', form=form, label=what_selected)
+
+@app.route("/forgot/password/<token>", methods=["GET","POST"])
+def confirm_forgot_password(token):
+    decoder = URLSafeTimedSerializer(app.config['SECRET_KEY'])
+    grabbed_username = decoder.loads(token,  salt=app.config['SECURITY_PASSWORD_SALT'], max_age=7200)
+    user = User.query.filter_by(username=grabbed_username).first_or_404()
+    form=UpdatePassword()
+    if form.validate_on_submit():
+        user.password = form.password.data
+        db.session.commit()
+        flash("Password successfully changed", "success")
+        return redirect(url_for("login"))
+    return render_template("new_password.html", form=form)
