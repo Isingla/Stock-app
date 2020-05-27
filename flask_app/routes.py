@@ -8,6 +8,61 @@ from flask_app import db, app, mail_engine
 from flask_app.forms import RegistrationForm, LoginForm, UpdatePassword, ForgotPassword, Input
 from flask_app.models import User
 
+#plot imports
+import json
+import random 
+import datetime
+import pusher
+from pusher import Pusher
+import plotly
+from plotly import graph_objs as graph
+import apscheduler
+from apscheduler.schedulers.background import BackgroundScheduler
+from apscheduler.triggers.interval import IntervalTrigger
+
+pusher_client = pusher.Pusher(
+  app_id='1007180',
+  key='611f11d3a4ccc2dc3396',
+  secret='4e06759f8641482f4a82',
+  cluster='us2',
+  ssl=True
+)
+
+time_axis=[]
+stocks_axis=[]
+
+def generate_graph():
+    time = datetime.datetime.now()
+    current_time = f"{time.hour:>02}:{time.minute:>02}:{time.second:>02}"
+
+    random_point = random.randint(0, 1000)
+    stocks_axis.append(random_point)
+
+    time_axis.append(current_time)
+
+    figure = [graph.Scatter(
+        x=time_axis,
+        y=stocks_axis,
+        name="random data"
+    )]
+
+    data = {
+        "figure": json.dumps(figure, cls = plotly.utils.PlotlyJSONEncoder)
+    }
+
+    pusher_client.trigger("stocks-app", "fetch-data", data)
+
+background = BackgroundScheduler()
+background.start()
+background.add_job(
+    func=generate_graph,
+    trigger=IntervalTrigger(seconds=2),
+    name="Generate Data in Background",
+    replace_existing=True
+)
+
+
+
 @app.route("/")
 def home():
     return render_template("home.html")
